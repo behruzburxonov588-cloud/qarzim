@@ -1,0 +1,11 @@
+{
+  "name": "qarz-daftar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Qarzim + SMS eslatmalar (Eskiz.uz)",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/server.test.js tests/v11.lib.test.js tests/v11.test.js tests/v13.test.js"
+  },
+  "engines": { "node": ">=18" }
+}

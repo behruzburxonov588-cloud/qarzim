@@ -1,0 +1,43 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Qarzim — Admin</title>
+<style>body{font-family:system-ui,sans-serif;margin:0;padding:20px;max-width:760px;margin-inline:auto;background:#fafafa;color:#111}h1{font-size:22px}h2{font-size:16px;margin-top:28px}
+.c{background:#fff;border:1px solid #e3e3e3;border-radius:14px;padding:12px 14px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;background:#111;color:#fff}button.g{background:#eee;color:#111}small{color:#666}
+input{padding:9px;border:1px solid #ccc;border-radius:10px;font-size:14px}.st{font-weight:800;font-size:12px}</style></head><body>
+<h1>Qarzim — boshqaruv</h1><div id="msg"><small>Yuklanmoqda…</small></div>
+<h2>Yangiliklar va e'lonlar</h2>
+<div class="c" style="display:block"><input id="nT" placeholder="Sarlavha" style="width:100%;box-sizing:border-box;margin-bottom:8px"><textarea id="nB" placeholder="Matn" style="width:100%;box-sizing:border-box;min-height:80px;padding:9px;border:1px solid #ccc;border-radius:10px;font:inherit"></textarea>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><select id="nC" style="padding:9px;border-radius:10px"><option value="yangilik">Yangilik</option><option value="yaxshilanish">Yaxshilanish</option><option value="muhim">Muhim e'lon</option><option value="texnik">Texnik ishlar</option></select>
+<input id="nD" type="datetime-local" title="Bo'sh = hozir chiqadi"><input id="nI" type="file" accept="image/*"></div><input type="hidden" id="nId"><button id="nS">Joylash</button> <button class="g" id="nX">Tozalash</button> <small>Sana bo'sh bo'lsa — darhol; kelajak sana — shunda chiqadi.</small></div><div id="news"></div>
+<h2>Buyurtmalar</h2><div id="orders"></div>
+<h2>Hisoblar</h2><div id="accs"></div>
+<h2>Zaxira holati</h2><div id="bk"></div>
+<h2>Muammo xabarlari</h2><div id="reps"></div>
+<h2>Qo'lda kredit qo'shish</h2><div class="c"><input id="ac" placeholder="hisob nomi (login)"><input id="cn" type="number" placeholder="kredit soni"><button id="add">Qo'shish</button></div>
+<script>
+let KEY=sessionStorage.getItem('adm')||'';if(!KEY){KEY=prompt('ADMIN_KEY (env.txt dagi maxfiy so\'z):')||'';sessionStorage.setItem('adm',KEY);}
+const H={'X-Admin-Key':KEY,'Content-Type':'application/json'};
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api=async(p,b)=>{const r=await fetch(p,{method:b?'POST':'GET',headers:H,body:b?JSON.stringify(b):undefined});return {ok:r.ok,j:await r.json()};};
+const ST={pending:'Kutilmoqda',claimed:"To'ladim dedi",approved:'Tasdiqlangan',rejected:'Rad etilgan'};
+async function load(){
+  const o=await api('/api/admin/orders');if(!o.ok){document.getElementById('msg').innerHTML='<b style="color:#c00">Kalit noto\'g\'ri.</b> Sahifani yangilab, qaytadan kiriting.';sessionStorage.removeItem('adm');return;}
+  document.getElementById('msg').innerHTML='';
+  document.getElementById('orders').innerHTML=o.j.orders.map(x=>'<div class="c"><div><b>'+E(x.code)+'</b> · '+E(x.account)+'<br><small>'+x.sms+(x.kind==='call'?' qo\'ng\'iroq · ':' SMS · ')+x.price.toLocaleString('ru')+' so\'m'+(x.received!==undefined?' (kelgan: '+x.received.toLocaleString('ru')+')':'')+' · '+new Date(x.createdAt).toLocaleString()+'</small></div><div><span class="st">'+ST[x.status]+'</span> '+(x.receipt?'<button class="g" data-r="'+x.id+'">Chek</button> ':'')+(x.status==='pending'||x.status==='claimed'?'<button data-a="approve" data-id="'+x.id+'" data-price="'+x.price+'">Tasdiqlash</button> <button class="g" data-a="reject" data-id="'+x.id+'">Rad</button>':'')+'</div></div>').join('')||'<small>Buyurtma yo\'q</small>';
+  const nw=await api('/api/admin/news');window.NEWS=nw.j.news||[];document.getElementById('news').innerHTML=window.NEWS.map(n=>'<div class="c"><div><b>'+E(n.title)+'</b> <small>'+E(n.category)+'</small><br><small>'+(n.publishAt>Date.now()?'Rejalangan: ':'Chiqqan: ')+new Date(n.publishAt).toLocaleString()+' · o\'qigan: '+n.reads+'</small></div><div><button class="g" data-ne="'+n.id+'">Tahrirlash</button> <button data-nd="'+n.id+'">O\'chirish</button></div></div>').join('')||'<small>Yangilik yo\'q</small>';
+  const a=await api('/api/admin/accounts');document.getElementById('accs').innerHTML=a.j.accounts.map(x=>'<div class="c"><b>'+E(x.id)+'</b><span>'+x.credits+' kredit · '+x.sent+' ta yuborilgan</span></div>').join('')||'<small>Hisob yo\'q</small>';
+}
+let IMG;document.getElementById('nI').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);IMG=c.toDataURL('image/jpeg',.8);};im.src=URL.createObjectURL(f);};
+const clr=()=>{['nT','nB','nD','nId','nI'].forEach(i=>document.getElementById(i).value='');IMG=undefined;};document.getElementById('nX').onclick=clr;
+document.getElementById('nS').onclick=async()=>{const d=document.getElementById('nD').value;const r=await api('/api/admin/news/save',{id:document.getElementById('nId').value||undefined,title:document.getElementById('nT').value,body:document.getElementById('nB').value,category:document.getElementById('nC').value,publishAt:d?new Date(d).toISOString():undefined,image:IMG});if(!r.ok)alert(r.j.error);else clr();load();};
+document.addEventListener('click',async e=>{const ne=e.target.closest('[data-ne]');if(ne){const n=window.NEWS.find(x=>x.id===ne.dataset.ne);document.getElementById('nId').value=n.id;document.getElementById('nT').value=n.title;document.getElementById('nB').value=n.body;document.getElementById('nC').value=n.category;scrollTo(0,0);return;}const nd=e.target.closest('[data-nd]');if(nd){if(confirm("O'chirilsinmi?")){await api('/api/admin/news/delete',{id:nd.dataset.nd});load();}return;}const rb=e.target.closest('[data-r]');if(rb){const r=await fetch('/api/admin/receipt?id='+rb.dataset.r,{headers:{'X-Admin-Key':KEY}});if(!r.ok){alert('Chek topilmadi');return;}window.open(URL.createObjectURL(await r.blob()),'_blank');return;}const b=e.target.closest('[data-a]');if(!b)return;let rec;if(b.dataset.a==='approve'){rec=prompt("Haqiqiy kelgan summa (so'm). Mijoz boshqa summa to'lagan bo'lsa, shuni yozing — SMS shunga qarab hisoblanadi:",b.dataset.price);if(rec===null)return;rec=parseInt(String(rec).replace(/\\D/g,''),10);if(!(rec>=0))return alert("Summa noto'g'ri");}const r=await api('/api/admin/'+b.dataset.a,b.dataset.a==='approve'?{id:b.dataset.id,received:rec}:{id:b.dataset.id});if(!r.ok)alert(r.j.error);load();});
+document.getElementById('add').onclick=async()=>{const r=await api('/api/admin/credits',{account:document.getElementById('ac').value.trim(),credits:parseInt(document.getElementById('cn').value,10),note:'admin sahifa'});if(!r.ok)alert(r.j.error);load();};
+async function loadOps(){
+  const bk=await api('/api/admin/backup/status');
+  const s=bk.j||{};
+  document.getElementById('bk').innerHTML=bk.ok?('<div class="c"><div><span class="st" style="color:'+(s.ok?'#0a7a4b':'#c00')+'">'+(s.ok?'Ishlamoqda':'Diqqat: zaxira eskirgan yoki xatolik bor')+'</span><br><small>Rejim: '+E(s.mode)+' · '+E(s.count)+' ta nusxa (saqlanadi: '+E(s.keep)+') · har '+E(s.intervalHours)+' soatda</small><br><small>Oxirgi nusxa: '+(s.lastAt?E(new Date(s.lastAt).toLocaleString())+' · '+E(s.lastReason||'')+' · '+E(s.lastBytes)+' bayt':'hali yo‘q')+'</small>'+(s.lastError?'<br><small style="color:#c00">Xato: '+E(s.lastError)+'</small>':'')+'</div><div><button id="bkNow">Hozir zaxiralash</button></div></div>'):'<small>Zaxira holatini olib bo‘lmadi</small>';
+  const rp=await api('/api/admin/reports');
+  document.getElementById('reps').innerHTML=!rp.ok?'<small>Xabarlarni olib bo‘lmadi</small>':(((rp.j.reports||[]).slice(0,100).map(x=>'<div class="c" style="display:block"><small>'+E(new Date(x.at).toLocaleString())+(x.shop?' · do‘kon: '+E(x.shop):' · anonim')+(x.page?' · sahifa: '+E(x.page):'')+(x.contact?' · aloqa: '+E(x.contact):'')+'</small><div style="white-space:pre-wrap;margin-top:6px">'+E(x.message)+'</div></div>').join(''))||'<small>Xabar yo‘q</small>');
+}
+document.addEventListener('click',async e=>{if(!e.target.closest('#bkNow'))return;const r=await api('/api/admin/backup/now',{});alert(r.ok?'Zaxira yaratildi':'Zaxira yaratib bo‘lmadi');loadOps();});
+load();loadOps();
+</script></body></html>
