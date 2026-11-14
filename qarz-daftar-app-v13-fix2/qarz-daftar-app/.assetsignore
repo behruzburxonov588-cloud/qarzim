@@ -1,0 +1,19 @@
+# Cloudflare'ga yuklanmaydigan fayllar (server kodi, hujjatlar, maxfiy sozlamalar)
+.assetsignore
+server.js
+package.json
+package-lock.json
+node_modules
+lib
+tests
+v11
+*.md
+env.txt
+.env
+env.example.txt
+supabase.sql
+admin.html
+data.json
+data.json.*
+backups
+receipts
