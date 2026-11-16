@@ -1,0 +1,10 @@
+{
+  // LOVE WORLD — alohida Cloudflare Worker (faqat statik sahifalar).
+  // Qarzim ilovasiga (ildizdagi wrangler.jsonc) ta'sir qilmaydi.
+  // Cloudflare'da "Root directory" = love-world qilib ulang yoki shu papkada: npx wrangler deploy
+  "name": "love-world",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "."
+  }
+}

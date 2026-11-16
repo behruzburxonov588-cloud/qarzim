@@ -40,10 +40,28 @@ Faylda har bir maydon o‘zbekcha izoh bilan yozilgan. Faqat qo‘shtirnoq ichid
 
 ## Joylash (internetga chiqarish)
 
-Sayt butunlay statik — `love-world` papkasini istalgan statik hostingga yuklash mumkin:
+### Cloudflare (tavsiya etiladi)
+`love-world/wrangler.jsonc` tayyor: sayt **alohida** `love-world` nomli Worker bo‘lib chiqadi, Qarzim ilovasiga tegmaydi. `editor.html`, testlar va README saytga chiqmaydi (`.assetsignore`).
+
+**A) GitHub orqali (token kerak emas):**
+1. Cloudflare → **Workers & Pages → Create → Import a repository** → GitHub’dan `qarzim` ni tanlang.
+2. Project name: `love-world`.
+3. **Advanced settings → Root directory:** `love-world`. Build command — bo‘sh. Deploy command — `npx wrangler deploy`.
+4. **Deploy** ni bosing. Manzil: `https://love-world.<sizning-subdomeningiz>.workers.dev`.
+5. Agar `love-world` papkasi hali `main` tarmog‘ida bo‘lmasa, loyiha sozlamalarida (Settings → Build → Branch control) production branch sifatida shu papka bor tarmoqni tanlang.
+
+Shundan keyin GitHub’ga har push qilganingizda sayt avtomatik yangilanadi.
+
+**B) Kompyuterdan:**
+```bash
+cd love-world
+npx wrangler login
+npx wrangler deploy
+```
+
+### Boshqa variantlar
 - **Netlify Drop** (app.netlify.com/drop) — papkani sudrab tashlang, havola tayyor.
-- **Cloudflare Pages** yoki **GitHub Pages** — `love-world` papkasini ildiz qilib belgilang.
-- Yoki shunchaki papkani telefonga/kompyuterga ko‘chirib, `index.html` ni oching.
+- Yoki shunchaki papkani telefonga/kompyuterga ko‘chirib, `index.html` ni oching (editor bilan birga ishlaydi).
 
 Sevgilingizga faqat `index.html` manzilini yuboring (`editor.html` emas — u yerda javoblar ko‘rinadi).
 

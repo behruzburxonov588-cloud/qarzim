@@ -1,0 +1,12 @@
+# Saytga chiqmaydigan fayllar (tahrirlash sahifasi va testlar javoblarni ko'rsatadi)
+wrangler.jsonc
+.assetsignore
+.wrangler
+node_modules
+tests
+README.md
+photos/README.md
+music/README.md
+editor.html
+js/editor.js
+css/editor.css
