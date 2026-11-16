@@ -10,3 +10,7 @@ Repozitoriy ildizidagi `wrangler.jsonc` ilovani Cloudflare'ga joylaydi (`npx wra
 
 ### Serverga ko'chirish (keyin)
 D1 dagi `qd_cloud` jadvali (`kind`, `key`, `part`, `value`) `server.js`/Supabase dagi `idx`/`data` yozuvlari bilan bir xil tuzilishda. Parol xeshi D1 da PBKDF2 (`alg: "pbkdf2"`), serverda scrypt — ko'chirishda `server.js` ga PBKDF2 tekshiruvini qo'shish kerak, shunda foydalanuvchilar parolni qayta kiritmasdan kiraveradi.
+
+## 💖 LOVE WORLD
+
+`love-world/` papkasida alohida romantik sayt bor (Qarzim ilovasiga bog‘liq emas, deploy’ga ta’sir qilmaydi). Batafsil: [love-world/README.md](love-world/README.md).

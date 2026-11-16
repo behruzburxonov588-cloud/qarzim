@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0420">
+  <meta name="robots" content="noindex">
+  <title>Tahrirlash · LOVE WORLD</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6fa8' d='M12 21c-.3 0-.6-.1-.8-.3C7.4 17.5 2 13.4 2 8.6 2 5.5 4.3 3 7.3 3c1.9 0 3.6 1 4.7 2.6C13.1 4 14.8 3 16.7 3 19.7 3 22 5.5 22 8.6c0 4.8-5.4 8.9-9.2 12.1-.2.2-.5.3-.8.3z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body class="editor">
+  <div class="nebula" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="ed-top">
+    <div class="ed-brand">
+      <span class="ed-logo">♥</span>
+      <div><b>LOVE WORLD</b><small>Yaratuvchi uchun tahrirlash sahifasi</small></div>
+    </div>
+    <div class="ed-actions">
+      <button class="btn btn-ghost btn-sm" id="edSave">Saqlash</button>
+      <button class="btn btn-primary btn-sm" id="edPreview">Saqlash va ko‘rish</button>
+      <button class="btn btn-gold btn-sm" id="edDownload">content.js ni yuklab olish</button>
+    </div>
+  </header>
+
+  <div class="ed-layout">
+    <aside class="ed-side">
+      <nav class="ed-nav" id="edNav" aria-label="Bo‘limlar"></nav>
+      <div class="ed-tools glass">
+        <p class="ed-status" id="edStatus"></p>
+        <button class="btn btn-ghost btn-sm" id="edUnlock">Hammasini ochib ko‘rish</button>
+        <button class="btn btn-ghost btn-sm" id="edReset">O‘yin taraqqiyotini tozalash</button>
+        <button class="btn btn-ghost btn-sm danger" id="edRevert">Asl matnlarga qaytarish</button>
+      </div>
+    </aside>
+
+    <main class="ed-main">
+      <section class="ed-intro glass">
+        <h1>Sevgi olamingizni shaxsiylashtiring</h1>
+        <ol>
+          <li><b>Matnlarni o‘zgartiring</b> — ismlar, topishmoqlar, 15 sabab, xotiralar, maktub va boshqalar.</li>
+          <li><b>«Saqlash va ko‘rish»</b> — sayt shu brauzerda yangi matnlar bilan ochiladi. «Hammasini ochib ko‘rish» tugmasi o‘yinlarni o‘ynamasdan barcha bo‘limlarni ko‘rishga yordam beradi.</li>
+          <li><b>«content.js ni yuklab olish»</b> — yuklangan faylni <code>love-world</code> papkasidagi <code>content.js</code> o‘rniga qo‘ying. Yuklangan rasmlar fayl ichiga joylanadi.</li>
+          <li>Saytni joylashdan oldin shu brauzerda «O‘yin taraqqiyotini tozalash»ni bosing — sarguzasht boshidan boshlanadi.</li>
+        </ol>
+        <p class="ed-note">Bu sahifa saytning o‘zida ko‘rinmaydi. Sevgilingizga faqat <code>index.html</code> manzilini yuboring.</p>
+      </section>
+      <div id="edForm"></div>
+    </main>
+  </div>
+  <div class="ed-toast" id="edToast" role="status"></div>
+
+  <script src="content.js"></script>
+  <script src="js/editor.js"></script>
+</body>
+</html>
